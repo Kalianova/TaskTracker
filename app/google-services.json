@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "963786271462",
+    "project_id": "rpgtrackertasks",
+    "storage_bucket": "rpgtrackertasks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963786271462:android:91268775b26bff6cc3a927",
+        "android_client_info": {
+          "package_name": "ru.kalianova.rpgtracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963786271462-dpfchoir2mknes0m1ik4fjjs5c1gmdbe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5xHnZy3LUzBno8vUK4zJxoTjoan0VzrA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963786271462-dpfchoir2mknes0m1ik4fjjs5c1gmdbe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
