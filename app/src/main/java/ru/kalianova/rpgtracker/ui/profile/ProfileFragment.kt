@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import com.snappydb.DB
+import com.snappydb.DBFactory
+import com.snappydb.SnappydbException
 import ru.kalianova.rpgtracker.R
 import ru.kalianova.rpgtracker.databinding.FragmentHomeBinding
 import ru.kalianova.rpgtracker.databinding.FragmentProfileBinding
@@ -38,12 +41,33 @@ class ProfileFragment : Fragment() {
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+        try {
+            val snappyDB = DBFactory.open(context, "User")
+            setValues(snappyDB)
+        } catch (e: SnappydbException) {
+            e.printStackTrace()
+        }
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    @Throws(SnappydbException::class)
+    private fun setValues(snappyDB: DB) {
+        val textProfile = binding.textProfile
+        val login = snappyDB["Login"]
+        val email = snappyDB["Email"]
+        profileViewModel.text.value = "Login: $login Email: $email"
+        /* val name = snappyDB["Name"]
+        val budget = snappyDB.getInt("budget")
+        val isAdult = snappyDB.getBoolean("isAdult")
+        val genres = snappyDB.getObjectArray(
+            "genres",
+            String::class.java
+        ) */
     }
 
 }

@@ -1,4 +1,4 @@
-package ru.kalianova.rpgtracker.db
+/*package ru.kalianova.rpgtracker.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -21,4 +21,4 @@ interface TaskTypeDao {
 
     @Delete
     fun delete(task: TaskType)
-}
+}*/

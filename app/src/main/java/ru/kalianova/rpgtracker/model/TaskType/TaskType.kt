@@ -1,14 +1,13 @@
 package ru.kalianova.rpgtracker.model.TaskType
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
 import java.util.*
 
 @Entity
 data class TaskType(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Int,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "color") val color: String
+    @Id var id: Long = 0,
+    val name: String = "",
+    val color: String = ""
 ) {
 }

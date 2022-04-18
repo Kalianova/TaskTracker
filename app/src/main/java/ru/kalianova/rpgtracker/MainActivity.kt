@@ -17,6 +17,14 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import ru.kalianova.rpgtracker.databinding.ActivityMainBinding
 
+import com.snappydb.SnappydbException
+
+import com.snappydb.DB
+import ru.kalianova.rpgtracker.db.ObjectBox
+import com.snappydb.DBFactory
+import org.w3c.dom.Text
+
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -39,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
+
         auth = FirebaseAuth.getInstance()
         firebaseUser = auth.currentUser
 
@@ -50,11 +59,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_profile
             )
         )
-        sharedPreference = getSharedPreferences(SETTINGS_NAME, MODE_PRIVATE)
-        var login: String? = sharedPreference.getString("Login", "")
-        //findViewById<TextView>(R.id.text_profile).text = login
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
     }
 
     fun clickLogout(view: View) {
@@ -70,4 +78,6 @@ class MainActivity : AppCompatActivity() {
     fun clickAddTaskType(view: View) {
         startActivity(Intent(this, TaskTypeActivity::class.java))
     }
+
+
 }

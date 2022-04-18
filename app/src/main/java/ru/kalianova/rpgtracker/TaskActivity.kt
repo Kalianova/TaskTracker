@@ -7,23 +7,25 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import androidx.room.Room
+import io.objectbox.Box
+import io.objectbox.kotlin.boxFor
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ru.kalianova.rpgtracker.databinding.ActivityTaskBinding
-import ru.kalianova.rpgtracker.db.TaskDatabase
+import ru.kalianova.rpgtracker.db.ObjectBox
+import ru.kalianova.rpgtracker.model.Task
 import ru.kalianova.rpgtracker.model.TaskType.TaskType
 import ru.kalianova.rpgtracker.model.TaskType.TaskTypeAdapter
+
 
 class TaskActivity : AppCompatActivity() {
     lateinit var binding: ActivityTaskBinding
     lateinit var selectedColor: TaskType
-    lateinit var db: TaskDatabase
+    private val borrowBox = ObjectBox.boxStore.boxFor(TaskType::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        db = Room.databaseBuilder(applicationContext, TaskDatabase::class.java, "task")
-            .build()
         loadSpinner()
     }
 
@@ -41,7 +43,7 @@ class TaskActivity : AppCompatActivity() {
                     "default",
                     color
                 )
-            ).plus(db.taskTypeDao().getAll())
+            ).plus(borrowBox.all)
             selectedColor = listColor[0]
             binding.editTextTypeSpinner.apply {
                 adapter = TaskTypeAdapter(

@@ -11,5 +11,5 @@ class ProfileViewModel : ViewModel() {
         value = "This is profile Fragment"
 
     }
-    val text: LiveData<String> = _text
+    val text: MutableLiveData<String> = _text
 }

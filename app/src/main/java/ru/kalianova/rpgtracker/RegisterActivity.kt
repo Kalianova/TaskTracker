@@ -10,6 +10,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.*
+import com.snappydb.DBFactory
+import com.snappydb.SnappydbException
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -72,9 +74,18 @@ class RegisterActivity : AppCompatActivity() {
                     toast.show()
                 }
             }
+        putValues(emailText, loginText)
+
     }
 
     fun backClicked(view: View) {
         finish()
+    }
+
+    @Throws(SnappydbException::class)
+    private fun putValues(email: String, login: String) {
+        val snappyDB = DBFactory.open(this, "User")
+        snappyDB.put("Email", email)
+        snappyDB.put("Login", login)
     }
 }
