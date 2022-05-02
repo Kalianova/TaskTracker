@@ -21,7 +21,8 @@ data class ColorList(
             ColorList(10, "Navy", "#000080"),
             ColorList(11, "Blue", "#0000FF"),
             ColorList(12, "Teal", "#008080"),
-            ColorList(13, "Aqua", "#00FFFF")
+            ColorList(13, "Aqua", "#00FFFF"),
+            ColorList(14, "White", "#FFFFFF")
         )
     }
 }

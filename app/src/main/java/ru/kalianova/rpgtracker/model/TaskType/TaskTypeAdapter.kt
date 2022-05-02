@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
+import android.widget.Filter
 import android.widget.TextView
 import ru.kalianova.rpgtracker.R
 import ru.kalianova.rpgtracker.model.TaskType.TaskType
@@ -38,6 +39,24 @@ class TaskTypeAdapter(context: Context, list: List<TaskType>)
         colorName.text = item.name
         colorImage.setBackgroundColor(Color.parseColor(item.color))
         return view
+
+    }
+
+    override fun getFilter(): Filter {
+        return filter
+    }
+    private var filter: Filter = object : Filter(){
+        override fun convertResultToString(resultValue: Any?): CharSequence {
+            val str = (resultValue as TaskType).name
+            return str
+        }
+        override fun performFiltering(p0: CharSequence?): FilterResults {
+            TODO("Not yet implemented")
+        }
+
+        override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+            TODO("Not yet implemented")
+        }
 
     }
 }

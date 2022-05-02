@@ -30,9 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private var firebaseUser: FirebaseUser? = null
-    private lateinit var sharedPreference: SharedPreferences
     private lateinit var dbReference: DatabaseReference
-    private val SETTINGS_NAME: String = "profile_settings"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +76,5 @@ class MainActivity : AppCompatActivity() {
     fun clickAddTaskType(view: View) {
         startActivity(Intent(this, TaskTypeActivity::class.java))
     }
-
 
 }

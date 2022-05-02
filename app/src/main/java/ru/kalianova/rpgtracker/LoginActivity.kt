@@ -10,13 +10,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.snappydb.DBFactory
 
 import com.snappydb.DB
 
 import com.snappydb.SnappydbException
-
-
 
 
 class LoginActivity : AppCompatActivity() {
@@ -26,20 +27,22 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private var firebaseUser: FirebaseUser? = null
     private lateinit var buttonRegister: Button
-    private lateinit var sharedPreference: SharedPreferences
+
     private val SETTINGS_NAME: String = "profile_settings"
+
+    private lateinit var database: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        sharedPreference = getSharedPreferences(SETTINGS_NAME, MODE_PRIVATE)
+        //sharedPreference = getSharedPreferences(SETTINGS_NAME, MODE_PRIVATE)
 
         editTextEmail = findViewById(R.id.editTextLoginEmail)
         editTextPassword = findViewById(R.id.editTextPassword)
         buttonRegister = findViewById(R.id.buttonRegisterLogin)
 
-        buttonRegister.setOnClickListener{
+        buttonRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
@@ -47,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firebaseUser = auth.currentUser
 
-        if(firebaseUser != null){
+        if (firebaseUser != null) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -64,7 +67,22 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(emailText, passwordText)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        sharedPreference.edit().putString("Login", "Name").apply()
+
+
+                        database = FirebaseFirestore.getInstance()
+                        val smth = database.collection("users").document(emailText).get()
+                            .addOnSuccessListener {
+                                putValues(
+                                    emailText,
+                                    it["name"].toString(),
+                                    it["admin"].toString().toBoolean()
+                                )
+
+                            }.addOnFailureListener {
+                            Toast.makeText(this, "Пользователь не был найден", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
                         val intent: Intent = Intent(this, MainActivity::class.java);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
@@ -74,14 +92,16 @@ class LoginActivity : AppCompatActivity() {
                             .show()
                     }
                 }
-            putValues(emailText, "")
+
+            //putValues(emailText, "")
         }
     }
 
     @Throws(SnappydbException::class)
-    private fun putValues(email: String, login: String) {
+    private fun putValues(email: String, login: String, admin: Boolean) {
         val snappyDB = DBFactory.open(this, "User")
         snappyDB.put("Email", email)
         snappyDB.put("Login", login)
+        snappyDB.put("Admin", admin)
     }
 }

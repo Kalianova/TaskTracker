@@ -42,6 +42,7 @@ class TaskTypeActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewColor = binding.viewColor
         viewColor.setBackgroundColor(Color.parseColor(color))
+        binding.textViewTaskTypeColorSpinner.setText("White")
 
         /* borrowQuery = borrowBox.query().build()
          subscription = borrowQuery
@@ -87,7 +88,6 @@ class TaskTypeActivity : AppCompatActivity() {
 
 
     private fun loadSpinner() {
-        var positionColor = 0
         var colorList = ColorList().basicColors()
         binding.textViewTaskTypeColorSpinner.setAdapter(
             ColorAdapter(
@@ -104,7 +104,11 @@ class TaskTypeActivity : AppCompatActivity() {
                     p3: Long
                 ) {
                     color = colorList[position].code
-                    viewColor.setBackgroundColor(Color.parseColor(colorList[position].code))
+                    viewColor.setBackgroundColor(
+                        Color.parseColor(
+                            colorList[position].code ?: "#FFFFFF"
+                        )
+                    )
                 }
 
             }
@@ -117,14 +121,18 @@ class TaskTypeActivity : AppCompatActivity() {
 
             if (listColor.size != 0) {
                 selectedColor = listColor[0]
-                binding.editTextTaskTypeSpinner.apply {
-                    adapter = TaskTypeAdapter(
+                binding.textViewTaskTypeSpinner.setAdapter(
+                    TaskTypeAdapter(
                         applicationContext, listColor
                     )
-                    setSelection(0, true)
+                )
+                binding.textViewTaskTypeSpinner.apply {
 
-                    onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
+                    setSelection(0, 0)
+
+                    onItemClickListener = object : AdapterView.OnItemClickListener {
+
+                        override fun onItemClick(
                             p0: AdapterView<*>?,
                             p1: View?,
                             position: Int,
@@ -137,11 +145,11 @@ class TaskTypeActivity : AppCompatActivity() {
                                 )
                             }?.name ?: "", false)
                             color = selectedColor.color
+
                             viewColor.setBackgroundColor(Color.parseColor(color))
+                            binding.viewColorTask.setBackgroundColor(Color.parseColor(listColor[position].color ?: "#FFFFFF"))
                             name.setText(selectedColor.name)
                         }
-
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
 
                     }
                 }

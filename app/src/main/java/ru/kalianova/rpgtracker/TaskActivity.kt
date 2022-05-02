@@ -14,6 +14,8 @@ import kotlinx.coroutines.launch
 import ru.kalianova.rpgtracker.databinding.ActivityTaskBinding
 import ru.kalianova.rpgtracker.db.ObjectBox
 import ru.kalianova.rpgtracker.model.Task
+import ru.kalianova.rpgtracker.model.TaskType.ColorAdapter
+import ru.kalianova.rpgtracker.model.TaskType.ColorList
 import ru.kalianova.rpgtracker.model.TaskType.TaskType
 import ru.kalianova.rpgtracker.model.TaskType.TaskTypeAdapter
 
@@ -44,26 +46,42 @@ class TaskActivity : AppCompatActivity() {
                     color
                 )
             ).plus(borrowBox.all)
-            selectedColor = listColor[0]
-            binding.editTextTypeSpinner.apply {
-                adapter = TaskTypeAdapter(
-                    applicationContext, listColor
-                )
-                setSelection(0, true)
-                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        p0: AdapterView<*>?,
-                        p1: View?,
-                        position: Int,
-                        p3: Long
-                    ) {
-                        selectedColor = listColor[position]
+
+            GlobalScope.launch {
+                var listColor = borrowBox.all
+
+
+                if (listColor.size != 0) {
+                    selectedColor = listColor[0]
+                    binding.textViewTaskTaskTypeSpinner.setAdapter(
+                        TaskTypeAdapter(
+                            applicationContext, listColor
+                        )
+                    )
+                    binding.textViewTaskTaskTypeSpinner.apply {
+
+                        setSelection(0, 0)
+
+                        onItemClickListener = object : AdapterView.OnItemClickListener {
+
+                            override fun onItemClick(
+                                p0: AdapterView<*>?,
+                                p1: View?,
+                                position: Int,
+                                p3: Long
+                            ) {
+                                binding.viewColorTask.setBackgroundColor(
+                                    Color.parseColor(
+                                        listColor[position].color ?: "#FFFFFF"
+                                    )
+                                )
+                            }
+
+                        }
                     }
-
-                    override fun onNothingSelected(p0: AdapterView<*>?) {}
-
                 }
             }
+
         }
 
     }

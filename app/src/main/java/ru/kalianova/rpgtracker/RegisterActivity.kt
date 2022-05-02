@@ -1,8 +1,10 @@
 package ru.kalianova.rpgtracker
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
@@ -10,6 +12,10 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.snappydb.DBFactory
 import com.snappydb.SnappydbException
 
@@ -20,6 +26,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var editTextPassword: EditText
     private lateinit var editTextPasswordRepeat: EditText
     private lateinit var buttonRegister: Button
+    private lateinit var database: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +66,17 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(emailText, passwordText)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    toast.setText("Регистрация прошла успешно")
-                    toast.show()
-                    finish()
+                    database = FirebaseFirestore.getInstance()
+                    database.collection("users").document(emailText)
+                        .set(hashMapOf("admin" to false, "name" to loginText))
+                        .addOnSuccessListener {
+
+                            toast.setText("Регистрация прошла успешно")
+                            toast.show()
+                            finish()
+                        }
+
+
                 } else {
                     var textToast: String
                     textToast = when (task.exception) {
@@ -74,18 +89,9 @@ class RegisterActivity : AppCompatActivity() {
                     toast.show()
                 }
             }
-        putValues(emailText, loginText)
-
     }
 
     fun backClicked(view: View) {
         finish()
-    }
-
-    @Throws(SnappydbException::class)
-    private fun putValues(email: String, login: String) {
-        val snappyDB = DBFactory.open(this, "User")
-        snappyDB.put("Email", email)
-        snappyDB.put("Login", login)
     }
 }

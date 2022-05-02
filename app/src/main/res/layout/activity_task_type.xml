@@ -6,19 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".TaskTypeActivity">
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/editTextTaskTypeSpinner"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/spinnerTaskType"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_marginTop="70dp"
-        android:background="?colorPrimary"
+        android:ems="10"
         android:minHeight="48dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@id/editTextTaskTypeNameLayout"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTaskTypeNameLayout"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/viewColorTask"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/textViewTaskTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Изменяемый тип задания"
+            android:inputType="none">
+
+        </com.google.android.material.textfield.MaterialAutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <View
+        android:id="@+id/viewColorTask"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/boarder"
+
+        app:layout_constraintBottom_toTopOf="@+id/editTextTaskTypeNameLayout"
+        app:layout_constraintLeft_toRightOf="@id/spinnerTaskType"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editTextTaskTypeNameLayout"
@@ -32,7 +58,7 @@
         app:layout_constraintBottom_toTopOf="@+id/spinnerColorTaskType"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextTaskTypeSpinner">
+        app:layout_constraintTop_toBottomOf="@id/viewColorTask">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextTaskTypeName"
@@ -73,6 +99,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
         android:layout_weight="1"
+        android:background="@drawable/boarder"
+        android:backgroundTintMode="src_in"
         app:layout_constraintBottom_toTopOf="@+id/buttonTaskTypeAdd"
         app:layout_constraintLeft_toRightOf="@id/spinnerColorTaskType"
         app:layout_constraintRight_toRightOf="parent"
