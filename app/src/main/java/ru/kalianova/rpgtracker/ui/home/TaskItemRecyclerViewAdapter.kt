@@ -1,13 +1,11 @@
-package ru.kalianova.rpgtracker
+package ru.kalianova.rpgtracker.ui.home
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 
-import ru.kalianova.rpgtracker.placeholder.PlaceholderContent.PlaceholderItem
 import ru.kalianova.rpgtracker.databinding.FragmentTaskItemBinding
 import ru.kalianova.rpgtracker.model.Task
 
@@ -31,7 +29,7 @@ class TaskItemRecyclerViewAdapter(
         val item = values[position]
         holder.idView.text = item.name
         holder.idView.isChecked = item.done != null
-        holder.contentView.text = item.date.toString()
+        holder.contentView.text = item.deadline.toString()
     }
 
     override fun getItemCount(): Int = values.size

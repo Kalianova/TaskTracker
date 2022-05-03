@@ -6,6 +6,7 @@
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/drawable/boarder.xml" value="0.15677083333333333" />
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
+        <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/activity_project.xml" value="0.16" />
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/activity_register.xml" value="0.264" />
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/activity_task.xml" value="0.264" />
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/activity_task_type.xml" value="0.264" />
@@ -16,14 +17,19 @@
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/fragment_item_list.xml" value="0.21739130434782608" />
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/fragment_login.xml" value="0.16666666666666666" />
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/fragment_notifications.xml" value="0.16666666666666666" />
-        <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/fragment_profile.xml" value="0.176" />
+        <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/fragment_profile.xml" value="0.4" />
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/fragment_task_item.xml" value="0.21739130434782608" />
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/profile_fragment.xml" value="0.13020833333333334" />
-        <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/spinner_item.xml" value="0.264" />
+        <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/project.xml" value="0.2015625" />
+        <entry key="..\:/Projects/RPGTracker/app/src/main/res/layout/spinner_item.xml" value="0.1" />
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Projects/RPGTracker/app/src/main/res/menu/priority_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Projects/RPGTracker/app/src/main/res/xml/root_preferences.xml" value="0.4" />
       </map>
     </option>
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ru/kalianova/rpgtracker/db/TaskDao.kt" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

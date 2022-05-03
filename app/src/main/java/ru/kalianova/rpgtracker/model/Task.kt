@@ -9,11 +9,12 @@ import java.util.*
 data class Task(
     @Id var id: Long = 0,
     val name: String = "",
-    @Transient
-    val type: TaskType? = null,
-    val difficulty: Int = 0,
+    val description: String ="",
+    val type: Long, //TaskType
+    val project: Long, //Project
     val priority: Int = 0,
-    val date: Date? = null,
-    val done: Date? = null
+    val deadline: Date? = null,
+    val done: Date? = null,
+    val global: Int? = null
 ) {
 }

@@ -60,15 +60,7 @@ class ProfileFragment : Fragment() {
         val textProfile = binding.textProfile
         val login = snappyDB["Login"]
         val email = snappyDB["Email"]
-        val admin = snappyDB["Admin"]
-        profileViewModel.text.value = "Login: $login Email: $email Admin: $admin"
-        /* val name = snappyDB["Name"]
-        val budget = snappyDB.getInt("budget")
-        val isAdult = snappyDB.getBoolean("isAdult")
-        val genres = snappyDB.getObjectArray(
-            "genres",
-            String::class.java
-        ) */
+        profileViewModel.text.value = "Login: $login \nEmail: $email"
     }
 
 }

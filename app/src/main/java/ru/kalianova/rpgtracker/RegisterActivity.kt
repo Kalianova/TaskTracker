@@ -68,7 +68,7 @@ class RegisterActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     database = FirebaseFirestore.getInstance()
                     database.collection("users").document(emailText)
-                        .set(hashMapOf("admin" to false, "name" to loginText))
+                        .set(hashMapOf("name" to loginText))
                         .addOnSuccessListener {
 
                             toast.setText("Регистрация прошла успешно")

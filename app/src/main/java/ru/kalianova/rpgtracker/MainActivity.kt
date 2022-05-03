@@ -77,4 +77,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, TaskTypeActivity::class.java))
     }
 
+    fun clickAddProject(view: View) {
+        startActivity(Intent(this, project::class.java))
+    }
+
 }

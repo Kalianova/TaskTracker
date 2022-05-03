@@ -27,7 +27,7 @@ import java.lang.IllegalArgumentException
 
 class TaskTypeActivity : AppCompatActivity() {
     lateinit var binding: ActivityTaskTypeBinding
-    lateinit var selectedColor: TaskType
+    var selectedColor: TaskType? = null
     lateinit var viewColor: View
     lateinit var name: EditText
     private val borrowBox = ObjectBox.boxStore.boxFor(TaskType::class.java)
@@ -70,9 +70,11 @@ class TaskTypeActivity : AppCompatActivity() {
     fun clickUpdateTaskType(view: View) {
         if (name.text.isEmpty()) {
             Toast.makeText(this, "Название не заполнено", Toast.LENGTH_SHORT).show()
+        } else if (selectedColor == null) {
+            Toast.makeText(this, "Тип задания не выбран", Toast.LENGTH_SHORT).show()
         } else {
             GlobalScope.launch {
-                borrowBox.put(TaskType(selectedColor.id, name.text.toString(), color))
+                borrowBox.put(TaskType(selectedColor!!.id, name.text.toString(), color))
             }
             finish()
         }
@@ -80,10 +82,14 @@ class TaskTypeActivity : AppCompatActivity() {
     }
 
     fun clickDeleteTaskType(view: View) {
-        GlobalScope.launch {
-            borrowBox.remove(selectedColor)
+        if (selectedColor == null){
+            Toast.makeText(this, "Тип задания не выбран", Toast.LENGTH_SHORT).show()
+        } else {
+            GlobalScope.launch {
+                borrowBox.remove(selectedColor)
+            }
+            finish()
         }
-        finish()
     }
 
 
@@ -120,7 +126,6 @@ class TaskTypeActivity : AppCompatActivity() {
 
 
             if (listColor.size != 0) {
-                selectedColor = listColor[0]
                 binding.textViewTaskTypeSpinner.setAdapter(
                     TaskTypeAdapter(
                         applicationContext, listColor
@@ -141,14 +146,14 @@ class TaskTypeActivity : AppCompatActivity() {
                             selectedColor = listColor[position]
                             binding.textViewTaskTypeColorSpinner.setText(colorList.find {
                                 it.code.equals(
-                                    selectedColor.color
+                                    selectedColor?.color
                                 )
                             }?.name ?: "", false)
-                            color = selectedColor.color
+                            color = selectedColor!!.color
 
                             viewColor.setBackgroundColor(Color.parseColor(color))
                             binding.viewColorTask.setBackgroundColor(Color.parseColor(listColor[position].color ?: "#FFFFFF"))
-                            name.setText(selectedColor.name)
+                            name.setText(selectedColor?.name)
                         }
 
                     }

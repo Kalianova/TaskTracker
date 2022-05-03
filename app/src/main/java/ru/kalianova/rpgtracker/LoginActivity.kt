@@ -74,8 +74,7 @@ class LoginActivity : AppCompatActivity() {
                             .addOnSuccessListener {
                                 putValues(
                                     emailText,
-                                    it["name"].toString(),
-                                    it["admin"].toString().toBoolean()
+                                    it["name"].toString()
                                 )
 
                             }.addOnFailureListener {
@@ -98,10 +97,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     @Throws(SnappydbException::class)
-    private fun putValues(email: String, login: String, admin: Boolean) {
+    private fun putValues(email: String, login: String) {
         val snappyDB = DBFactory.open(this, "User")
         snappyDB.put("Email", email)
         snappyDB.put("Login", login)
-        snappyDB.put("Admin", admin)
     }
 }
