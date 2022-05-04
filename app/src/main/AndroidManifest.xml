@@ -11,6 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RPGTracker">
         <activity
+            android:name=".ListProject"
+            android:exported="true" />
+        <activity
+            android:name=".ListActivity"
+            android:exported="true" />
+        <activity
             android:name=".project"
             android:exported="true" />
         <activity

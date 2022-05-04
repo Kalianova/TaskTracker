@@ -2,16 +2,17 @@ package ru.kalianova.rpgtracker
 
 import android.content.res.Configuration
 import android.graphics.Color
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.get
 import androidx.room.Room
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.snappydb.DBFactory
 import io.objectbox.Box
 import io.objectbox.kotlin.boxFor
 import kotlinx.coroutines.GlobalScope
@@ -28,10 +29,13 @@ import java.util.*
 
 class TaskActivity : AppCompatActivity() {
     lateinit var binding: ActivityTaskBinding
+    var id: Long? = null
     var selectedTask: Task? = null
     var selectedColor: TaskType? = null
     var selectedProject: Project? = null
     var selectedPriority: Priority? = null
+    var createUser: String = ""
+    private lateinit var firebaseFirestore: FirebaseFirestore
     private val borrowBox = ObjectBox.boxStore.boxFor(TaskType::class.java)
     private val borrowBoxTask = ObjectBox.boxStore.boxFor(Task::class.java)
     private val borrowBoxProject = ObjectBox.boxStore.boxFor(Project::class.java)
@@ -39,6 +43,23 @@ class TaskActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val bundle = intent.extras
+        id = bundle?.getLong("id")
+
+        if (id != null) {
+            selectedTask = borrowBoxTask.get(id!!)
+            binding.editTextTask.setText(selectedTask?.name, false)
+            changeTask()
+        }
+        binding.globalSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                binding.spinnerProjectUserLayout.visibility = View.VISIBLE
+            } else {
+                binding.spinnerProjectUserLayout.visibility = View.GONE
+            }
+        }
+        val snappyDB = DBFactory.open(this, "User")
+        createUser = snappyDB.get("Email")
         loadSpinner()
     }
 
@@ -103,33 +124,8 @@ class TaskActivity : AppCompatActivity() {
                                 p3: Long
                             ) {
                                 selectedTask = listTask[position]
-                                /*binding.editTextTaskName.setText(selectedTask?.name)
-                                binding.editTextTaskDescription.setText(selectedTask?.description)
-                                selectedColor = borrowBox.get(selectedTask!!.type)
-                                binding.textViewTaskTaskTypeSpinner.setText(
-                                    selectedColor?.name,
-                                    false
-                                )
-                                binding.viewColorTask.setBackgroundColor(
-                                    Color.parseColor(
-                                        selectedColor?.color ?: "#FFFFFF"
-                                    )
-                                )
-                                selectedProject = borrowBoxProject.get(selectedTask!!.project)
-                                binding.textViewProject.setText(selectedProject?.name, false)
-                                selectedPriority =
-                                    Priority().priorityList()[selectedTask!!.priority]
-                                binding.priorityPicker.setText(selectedPriority?.name, false)
-                                if (selectedTask?.deadline != null) {
-                                    binding.deadlineSwitch.isChecked = true
-                                    binding.datePickerTask.updateDate(
-                                        selectedTask?.deadline!!.year,
-                                        selectedTask?.deadline!!.month,
-                                        selectedTask?.deadline!!.day
-                                    )
-                                }
-                                binding.globalSwitch.isChecked = selectedTask?.global != null
-                           */ }
+                                changeTask()
+                            }
                         }
                     }
                 }
@@ -203,6 +199,7 @@ class TaskActivity : AppCompatActivity() {
 
     }
 
+
     fun clickCreateTask(view: View) {
         val description = binding.editTextTaskDescription.text.toString()
         val name = binding.editTextTaskName.text.toString()
@@ -218,19 +215,38 @@ class TaskActivity : AppCompatActivity() {
             Toast.makeText(this, "Не все поля заполнены", Toast.LENGTH_SHORT).show()
         } else {
             GlobalScope.launch {
-                borrowBoxTask.put(
-                    Task(
-                        0,
-                        name,
-                        description,
-                        selectedColor!!.id,
-                        selectedProject!!.id,
-                        selectedPriority!!.id,
-                        deadline,
-                        null,
-                        null ///////////global index
+                if (!binding.globalSwitch.isChecked) {
+                    borrowBoxTask.put(
+                        Task(
+                            0,
+                            name,
+                            description,
+                            selectedColor!!.id,
+                            selectedProject!!.id,
+                            selectedPriority!!.id,
+                            deadline,
+                            null,
+                            null ///////////global index
+                        )
                     )
-                )
+                } else {
+
+                    firebaseFirestore = FirebaseFirestore.getInstance()
+                    val addedDocRef =
+                        firebaseFirestore.collection("tasks")
+                            .add(
+                                hashMapOf(
+                                    "name" to name,
+                                    "description" to description,
+                                    "project" to "id",
+                                    "priority" to selectedPriority!!.id,
+                                    "deadline" to deadline,
+                                    "done" to false,
+                                    "user" to "user",
+                                    "createUser" to createUser
+                                )
+                            )
+                }
             }
             finish()
         }
@@ -240,8 +256,12 @@ class TaskActivity : AppCompatActivity() {
         if (selectedTask == null) {
             Toast.makeText(this, "Задание не выбрано", Toast.LENGTH_SHORT).show()
         } else {
-            GlobalScope.launch {
-                borrowBoxTask.remove(selectedTask)
+            if (!binding.globalSwitch.isChecked) {
+                GlobalScope.launch {
+                    borrowBoxTask.remove(selectedTask)
+                }
+            } else {
+
             }
             finish()
         }
@@ -261,22 +281,56 @@ class TaskActivity : AppCompatActivity() {
                     binding.datePickerTask.month,
                     binding.datePickerTask.dayOfMonth
                 ) else null
-                borrowBoxTask.put(
-                    Task(
-                        selectedTask!!.id,
-                        binding.editTextTaskName.text.toString(),
-                        binding.editTextTaskDescription.text.toString(),
-                        selectedColor!!.id,
-                        selectedProject!!.id,
-                        selectedPriority!!.id,
-                        deadline,
-                        null,
-                        null ///////////global index
+                if (!binding.globalSwitch.isChecked) {
+                    borrowBoxTask.put(
+                        Task(
+                            selectedTask!!.id,
+                            binding.editTextTaskName.text.toString(),
+                            binding.editTextTaskDescription.text.toString(),
+                            selectedColor!!.id,
+                            selectedProject!!.id,
+                            selectedPriority!!.id,
+                            deadline,
+                            null,
+                            null
+                        )
                     )
-                )
+                } else {
+
+                    ///////////global index
+                }
 
             }
             finish()
         }
+    }
+
+    fun changeTask() {
+        binding.editTextTaskName.setText(selectedTask?.name)
+        binding.editTextTaskDescription.setText(selectedTask?.description)
+        selectedColor = borrowBox.get(selectedTask!!.type)
+        binding.textViewTaskTaskTypeSpinner.setText(
+            selectedColor?.name,
+            false
+        )
+        binding.viewColorTask.setBackgroundColor(
+            Color.parseColor(
+                selectedColor?.color ?: "#FFFFFF"
+            )
+        )
+        selectedProject = borrowBoxProject.get(selectedTask!!.project)
+        binding.textViewProject.setText(selectedProject?.name, false)
+        selectedPriority =
+            Priority().priorityList()[selectedTask!!.priority]
+        binding.priorityPicker.setText(selectedPriority?.name, false)
+        if (selectedTask?.deadline != null) {
+            binding.deadlineSwitch.isChecked = true
+            binding.datePickerTask.updateDate(
+                selectedTask?.deadline!!.year,
+                selectedTask?.deadline!!.month,
+                selectedTask?.deadline!!.day
+            )
+        }
+        binding.globalSwitch.isChecked = selectedTask?.global != null
     }
 }

@@ -14,7 +14,7 @@ data class Task(
     val project: Long, //Project
     val priority: Int = 0,
     val deadline: Date? = null,
-    val done: Date? = null,
+    var done: Date? = null,
     val global: Int? = null
 ) {
 }

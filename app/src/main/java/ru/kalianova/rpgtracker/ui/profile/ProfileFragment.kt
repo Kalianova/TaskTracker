@@ -12,9 +12,9 @@ import com.snappydb.DB
 import com.snappydb.DBFactory
 import com.snappydb.SnappydbException
 import ru.kalianova.rpgtracker.R
-import ru.kalianova.rpgtracker.databinding.FragmentHomeBinding
 import ru.kalianova.rpgtracker.databinding.FragmentProfileBinding
-import ru.kalianova.rpgtracker.ui.home.HomeViewModel
+import ru.kalianova.rpgtracker.db.ObjectBox
+import ru.kalianova.rpgtracker.model.Task
 
 class ProfileFragment : Fragment() {
 

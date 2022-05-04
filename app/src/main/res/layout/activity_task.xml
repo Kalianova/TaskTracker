@@ -42,7 +42,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:text="Общий доступ"
-            app:layout_constraintBottom_toTopOf="@+id/editTextNameTaskLayout"
+            app:layout_constraintBottom_toTopOf="@+id/spinnerProjectUserLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editTextTaskLayout">
@@ -62,7 +62,7 @@
             app:layout_constraintBottom_toTopOf="@+id/taskDescription"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/globalSwitch">
+            app:layout_constraintTop_toBottomOf="@+id/spinnerProjectUserLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextTaskName"
@@ -231,7 +231,33 @@
             app:layout_constraintLeft_toRightOf="@+id/buttonCreateTask"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/datePickerTask"></com.google.android.material.button.MaterialButton>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spinnerProjectUserLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:ems="10"
+            android:minHeight="48dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/editTextNameTaskLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/globalSwitch">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/textViewUserProject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Исполнитель"
+                android:inputType="none">
+
+            </com.google.android.material.textfield.MaterialAutoCompleteTextView>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

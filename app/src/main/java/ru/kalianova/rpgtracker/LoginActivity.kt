@@ -68,7 +68,6 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
 
-
                         database = FirebaseFirestore.getInstance()
                         val smth = database.collection("users").document(emailText).get()
                             .addOnSuccessListener {
@@ -78,9 +77,13 @@ class LoginActivity : AppCompatActivity() {
                                 )
 
                             }.addOnFailureListener {
-                            Toast.makeText(this, "Пользователь не был найден", Toast.LENGTH_SHORT)
-                                .show()
-                        }
+                                Toast.makeText(
+                                    this,
+                                    "Пользователь не был найден",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            }
 
                         val intent: Intent = Intent(this, MainActivity::class.java);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)

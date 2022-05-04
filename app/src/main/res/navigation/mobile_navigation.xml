@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="ru.kalianova.rpgtracker.ui.dashboard.DashboardFragment"
+        android:name="ru.kalianova.rpgtracker.ui.dashboard.ProjectItemFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_project_item_list" />
 
     <fragment
         android:id="@+id/navigation_profile"

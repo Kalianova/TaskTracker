@@ -6,18 +6,32 @@
 
     <CheckBox
         android:id="@+id/checkBoxTask"
+        android:textSize="17sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:text="Название"
+
         android:layout_margin="8dp"/>
+
+    <TextView
+        android:id="@+id/checkBoxTextView"
+        android:textSize="17sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Название"
+        android:textAlignment="textStart"
+        android:layout_weight="3"
+        android:layout_margin="8dp">
+
+    </TextView>
 
     <TextView
         android:id="@+id/item_date_task"
         android:layout_width="wrap_content"
+        android:textSize="17sp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/text_margin"
+        android:layout_margin="8dp"
+        android:minWidth="60dp"
         android:text="17.03.2000"
         android:textAppearance="?attr/textAppearanceListItem" />
 
